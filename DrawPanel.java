@@ -1,5 +1,6 @@
 import src.Car;
 import src.CarWorkshop;
+import src.Volvo240;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -45,6 +46,13 @@ public class DrawPanel extends JPanel {
             if (dr.object.getX() > 800 || dr.object.getX() < 0 || dr.object.getY() > 560 || dr.object.getY() < 0) {
                 dr.object.turnRight(180);
             }
+
+            for (DrawableObject<CarWorkshop<? extends Car>> drW : workshopEntities) {
+                if (dr.object.getX() == drW.point.x && dr.object.getY() == drW.point.y) {
+                    drW.object.loadCar(dr.object);
+                }
+            }
+
             g.drawImage(dr.image, dr.point.x, dr.point.y, null);
         }
 
