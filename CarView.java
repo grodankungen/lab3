@@ -25,9 +25,14 @@ public class CarView extends JFrame{
     JPanel controlPanel = new JPanel();
 
     JPanel gasPanel = new JPanel();
+    JPanel bedAnglePanel = new JPanel();
+
     JSpinner gasSpinner = new JSpinner();
+    JSpinner bedAngleSpinner = new JSpinner();
+
     int gasAmount = 0;
     JLabel gasLabel = new JLabel("Amount of gas");
+    JLabel bedAngleLabel = new JLabel("Bed raise angle");
 
     JButton gasButton = new JButton("Gas");
     JButton brakeButton = new JButton("Brake");
@@ -75,6 +80,12 @@ public class CarView extends JFrame{
 
         this.add(gasPanel);
 
+        bedAnglePanel.setLayout(new BorderLayout());
+        bedAnglePanel.add(bedAngleLabel, BorderLayout.PAGE_START);
+        bedAnglePanel.add(bedAngleSpinner, BorderLayout.PAGE_END);
+
+        this.add(bedAnglePanel);
+
         controlPanel.setLayout(new GridLayout(2,4));
 
         controlPanel.add(gasButton, 0);
@@ -105,6 +116,41 @@ public class CarView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 carC.gas(gasAmount);
+            }
+        });
+
+        brakeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.brake(gasAmount);
+            }
+        });
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.startCar();
+            }
+        });
+
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.stopCar();
+            }
+        });
+
+        turboOnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.setTurboOn();
+            }
+        });
+
+        turboOffButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.setTurboOff();
             }
         });
 

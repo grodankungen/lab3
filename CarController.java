@@ -1,4 +1,6 @@
 import src.Car;
+import src.Saab95;
+import src.Scania;
 import src.Volvo240;
 
 import javax.swing.*;
@@ -59,9 +61,59 @@ public class CarController {
     // Calls the gas method for each car once
     void gas(int amount) {
         double gas = ((double) amount) / 100;
-        for (Car car : cars
-        ) {
+        for (Car car : cars) {
             car.gas(gas);
+        }
+    }
+
+    void brake(int amount) {
+        double brake = ((double) amount) / 100;
+        for (Car car : cars) {
+            car.brake(brake);
+        }
+    }
+
+    void startCar() {
+        for (Car car : cars) {
+            car.startEngine();
+        }
+    }
+
+    void stopCar() {
+        for (Car car : cars) {
+            car.stopEngine();
+        }
+    }
+
+    void setTurboOn() {
+        for (Car car : cars) {
+            if (car instanceof Saab95) {
+                ((Saab95) car).setTurboOn();
+            }
+        }
+    }
+
+    void setTurboOff() {
+        for (Car car : cars) {
+            if (car instanceof Saab95) {
+                ((Saab95) car).setTurboOff();
+            }
+        }
+    }
+
+    void liftBed(double amount) {
+        for (Car car : cars) {
+            if (car instanceof Scania) {
+                ((Scania) car).raise(amount);
+            }
+        }
+    }
+
+    void lowerBed(double amount) {
+        for (Car car : cars) {
+            if (car instanceof Scania) {
+                ((Scania) car).lower(amount);
+            }
         }
     }
 }
