@@ -27,7 +27,7 @@ public class CarController {
     ArrayList<DrawableObject<Car>> CarEntities = new ArrayList<>();
 
     //entities that don't move (CarWorkshop)
-    ArrayList<DrawableObject<CarWorkshop<? extends Car>>> WorkshopEntities = new ArrayList<>();
+    ArrayList<DrawableObject<CarWorkshop<Volvo240>>> WorkshopEntities = new ArrayList<>();
 
 
     //methods:
@@ -37,10 +37,10 @@ public class CarController {
         CarController cc = new CarController();
 
         //  then added into "Car" / "imCar" lists
-        DrawableObject<CarWorkshop<? extends Car>> workshopDrawable = new DrawableObject<>(new CarWorkshop<Volvo240>(5), new Point(300, 300), "pics/VolvoBrand.jpg");
+        DrawableObject<CarWorkshop<Volvo240>> workshopDrawable = new DrawableObject<>(new CarWorkshop<>(5), new Point(300, 300), "pics/VolvoBrand.jpg");
         cc.WorkshopEntities.add(workshopDrawable);
 
-        DrawableObject<Car> volvoDrawable = new DrawableObject<>(new Volvo240(0, 0), new Point(0, 0), "pics/Volvo240.jpg");
+        DrawableObject<Car> volvoDrawable = new DrawableObject<>(new Volvo240(0, 300), new Point(0, 300), "pics/Volvo240.jpg");
         cc.CarEntities.add(volvoDrawable);
 
 

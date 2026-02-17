@@ -15,7 +15,7 @@ import javax.swing.*;
 public class DrawPanel extends JPanel {
 
     ArrayList<DrawableObject<Car>> carEntities = new ArrayList<>();
-    ArrayList<DrawableObject<CarWorkshop<? extends Car>>> workshopEntities = new ArrayList<>();
+    ArrayList<DrawableObject<CarWorkshop<Volvo240>>> workshopEntities = new ArrayList<>();
 
     // TODO: Make this general for all cars
     void moveit(DrawableObject<?> drawable, int x, int y) {
@@ -24,7 +24,7 @@ public class DrawPanel extends JPanel {
     }
 
     // Initializes the panel and reads the images
-    public DrawPanel(int x, int y, ArrayList<DrawableObject<Car>> carEntities, ArrayList<DrawableObject<CarWorkshop<? extends Car>>> workshopEntities) {
+    public DrawPanel(int x, int y, ArrayList<DrawableObject<Car>> carEntities, ArrayList<DrawableObject<CarWorkshop<Volvo240>>> workshopEntities) {
         this.setDoubleBuffered(true);
         this.setPreferredSize(new Dimension(x, y));
         this.setBackground(Color.green);
@@ -47,16 +47,20 @@ public class DrawPanel extends JPanel {
                 dr.object.turnRight(180);
             }
 
-            for (DrawableObject<CarWorkshop<? extends Car>> drW : workshopEntities) {
-                if (dr.object.getX() == drW.point.x && dr.object.getY() == drW.point.y) {
-                    drW.object.loadCar(dr.object);
+            for (DrawableObject<CarWorkshop<Volvo240>> drW : workshopEntities) {
+                if (dr.object.getX() > drW.point.x - 10 && dr.object.getX() < drW.point.x + 10 && dr.object.getY() > drW.point.y - 10 && dr.object.getY() < drW.point.y + 10) {
+
+                    if (dr.object instanceof Volvo240) {
+
+                        drW.object.loadCar(((Volvo240) dr.object));
+                    }
                 }
             }
 
             g.drawImage(dr.image, dr.point.x, dr.point.y, null);
         }
 
-        for (DrawableObject<CarWorkshop<? extends Car>> dr : workshopEntities) {
+        for (DrawableObject<CarWorkshop<Volvo240>> dr : workshopEntities) {
             g.drawImage(dr.image, dr.point.x, dr.point.y, null);
         }
     }

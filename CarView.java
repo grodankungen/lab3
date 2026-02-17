@@ -1,5 +1,6 @@
 import src.Car;
 import src.CarWorkshop;
+import src.Volvo240;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -50,7 +51,7 @@ public class CarView extends JFrame {
     JButton stopButton = new JButton("Stop all cars");
 
     // Constructor
-    public CarView(String framename, CarController cc, ArrayList<DrawableObject<Car>> carEntities, ArrayList<DrawableObject<CarWorkshop<? extends Car>>> workshopEntities) {
+    public CarView(String framename, CarController cc, ArrayList<DrawableObject<Car>> carEntities, ArrayList<DrawableObject<CarWorkshop<Volvo240>>> workshopEntities) {
         this.carC = cc;
         this.drawPanel = new DrawPanel(X, Y - 240, carEntities, workshopEntities);
         initComponents(framename);
@@ -67,11 +68,10 @@ public class CarView extends JFrame {
         this.add(drawPanel);
 
 
-        SpinnerModel gasSpinnerModel =
-                new SpinnerNumberModel(0, //initial value
-                        0, //min
-                        100, //max
-                        1);//step
+        SpinnerModel gasSpinnerModel = new SpinnerNumberModel(0, //initial value
+                0, //min
+                100, //max
+                1);//step
         gasSpinner = new JSpinner(gasSpinnerModel);
         gasSpinner.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
