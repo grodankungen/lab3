@@ -1,4 +1,5 @@
 import src.Car;
+import src.CarWorkshop;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,7 +13,8 @@ import javax.swing.*;
 
 public class DrawPanel extends JPanel {
 
-    ArrayList<DrawableObject<Car>> Carables = new ArrayList<>();
+    ArrayList<DrawableObject<Car>> carEntities = new ArrayList<>();
+    ArrayList<DrawableObject<CarWorkshop<? extends Car>>> workshopEntities = new ArrayList<>();
 
     // TODO: Make this general for all cars
     void moveit(DrawableObject<?> drawable, int x, int y) {
@@ -21,13 +23,14 @@ public class DrawPanel extends JPanel {
     }
 
     // Initializes the panel and reads the images
-    public DrawPanel(int x, int y, ArrayList<DrawableObject<Car>> drawables) {
+    public DrawPanel(int x, int y, ArrayList<DrawableObject<Car>> carEntities, ArrayList<DrawableObject<CarWorkshop<? extends Car>>> workshopEntities) {
         this.setDoubleBuffered(true);
         this.setPreferredSize(new Dimension(x, y));
         this.setBackground(Color.green);
         // Print an error message in case file is not found with a try/catch block
 
-        this.Carables = drawables;
+        this.carEntities = carEntities;
+        this.workshopEntities = workshopEntities;
     }
 
     // This method is called each time the panel updates/refreshes/repaints itself
@@ -36,12 +39,16 @@ public class DrawPanel extends JPanel {
         super.paintComponent(g);
 
 
-        for (DrawableObject<Car> dr : Carables) {
+        for (DrawableObject<Car> dr : carEntities) {
 
             //very readable
             if (dr.object.getX() > 800 || dr.object.getX() < 0 || dr.object.getY() > 560 || dr.object.getY() < 0) {
                 dr.object.turnRight(180);
             }
+            g.drawImage(dr.image, dr.point.x, dr.point.y, null);
+        }
+
+        for (DrawableObject<CarWorkshop<? extends Car>> dr : workshopEntities) {
             g.drawImage(dr.image, dr.point.x, dr.point.y, null);
         }
     }

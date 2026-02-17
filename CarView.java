@@ -1,4 +1,5 @@
 import src.Car;
+import src.CarWorkshop;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -49,9 +50,9 @@ public class CarView extends JFrame {
     JButton stopButton = new JButton("Stop all cars");
 
     // Constructor
-    public CarView(String framename, CarController cc, ArrayList<DrawableObject<Car>> drawables) {
+    public CarView(String framename, CarController cc, ArrayList<DrawableObject<Car>> carEntities, ArrayList<DrawableObject<CarWorkshop<? extends Car>>> workshopEntities) {
         this.carC = cc;
-        this.drawPanel = new DrawPanel(X, Y - 240, drawables);
+        this.drawPanel = new DrawPanel(X, Y - 240, carEntities, workshopEntities);
         initComponents(framename);
     }
 

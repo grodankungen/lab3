@@ -23,14 +23,11 @@ public class CarController {
     // The frame that represents this instance View of the MVC pattern
     CarView frame;
 
-    //list of all drawable entities (used by DrawPanel)
-    ArrayList<DrawableObject<?>> drawableEntities = new ArrayList<>();
-
     //entities that move (e.g. can have a velocity)
     ArrayList<DrawableObject<Car>> CarEntities = new ArrayList<>();
 
     //entities that don't move (CarWorkshop)
-    ArrayList<DrawableObject<Object>> imCarEntities = new ArrayList<>();
+    ArrayList<DrawableObject<CarWorkshop<? extends Car>>> WorkshopEntities = new ArrayList<>();
 
 
     //methods:
@@ -39,28 +36,23 @@ public class CarController {
         // Instance of this class
         CarController cc = new CarController();
 
-        //all drawable entities are added into the drawableEntities list,
         //  then added into "Car" / "imCar" lists
-        DrawableObject<Object> workshopDrawable = new DrawableObject<>(new CarWorkshop<Volvo240>(5), new Point(300, 300), "pics/VolvoBrand.jpg");
-        cc.imCarEntities.add(workshopDrawable);
-        cc.drawableEntities.add(workshopDrawable);
+        DrawableObject<CarWorkshop<? extends Car>> workshopDrawable = new DrawableObject<>(new CarWorkshop<Volvo240>(5), new Point(300, 300), "pics/VolvoBrand.jpg");
+        cc.WorkshopEntities.add(workshopDrawable);
 
         DrawableObject<Car> volvoDrawable = new DrawableObject<>(new Volvo240(0, 0), new Point(0, 0), "pics/Volvo240.jpg");
         cc.CarEntities.add(volvoDrawable);
-        cc.drawableEntities.add(volvoDrawable);
 
 
         DrawableObject<Car> saab95Drawable = new DrawableObject<>(new Saab95(0, 100), new Point(0, 100), "pics/Saab95.jpg");
         cc.CarEntities.add(saab95Drawable);
-        cc.drawableEntities.add(saab95Drawable);
 
 
         DrawableObject<Car> scaniaDrawable = new DrawableObject<>(new Scania(0, 200), new Point(0, 200), "pics/Scania.jpg");
         cc.CarEntities.add(scaniaDrawable);
-        cc.drawableEntities.add(scaniaDrawable);
 
         // Start a new view and send a reference of self
-        cc.frame = new CarView("CarSim 1.0", cc, cc.CarEntities);
+        cc.frame = new CarView("CarSim 1.0", cc, cc.CarEntities, cc.WorkshopEntities);
 
         // Start the timer
         cc.timer.start();
