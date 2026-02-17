@@ -101,7 +101,7 @@ public class CarController {
         }
     }
 
-    void liftBed(double amount) {
+    void liftBed(int amount) {
         for (Car car : cars) {
             if (car instanceof Scania) {
                 ((Scania) car).raise(amount);
@@ -109,7 +109,7 @@ public class CarController {
         }
     }
 
-    void lowerBed(double amount) {
+    void lowerBed(int amount) {
         for (Car car : cars) {
             if (car instanceof Scania) {
                 ((Scania) car).lower(amount);
