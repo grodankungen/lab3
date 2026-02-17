@@ -1,3 +1,5 @@
+import src.Car;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -47,7 +49,7 @@ public class CarView extends JFrame {
     JButton stopButton = new JButton("Stop all cars");
 
     // Constructor
-    public CarView(String framename, CarController cc, ArrayList<DrawableObject<?>> drawables) {
+    public CarView(String framename, CarController cc, ArrayList<DrawableObject<Car>> drawables) {
         this.carC = cc;
         this.drawPanel = new DrawPanel(X, Y - 240, drawables);
         initComponents(framename);
@@ -64,7 +66,6 @@ public class CarView extends JFrame {
         this.add(drawPanel);
 
 
-
         SpinnerModel gasSpinnerModel =
                 new SpinnerNumberModel(0, //initial value
                         0, //min
@@ -73,7 +74,7 @@ public class CarView extends JFrame {
         gasSpinner = new JSpinner(gasSpinnerModel);
         gasSpinner.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
-                gasAmount = (int) ((JSpinner)e.getSource()).getValue();
+                gasAmount = (int) ((JSpinner) e.getSource()).getValue();
             }
         });
 
@@ -81,7 +82,7 @@ public class CarView extends JFrame {
         bedAngleSpinner = new JSpinner(bedSpinnerModel);
         bedAngleSpinner.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
-                bedAngle = (int) ((JSpinner)e.getSource()).getValue();
+                bedAngle = (int) ((JSpinner) e.getSource()).getValue();
             }
         });
 
@@ -97,7 +98,7 @@ public class CarView extends JFrame {
 
         this.add(bedAnglePanel);
 
-        controlPanel.setLayout(new GridLayout(2,4));
+        controlPanel.setLayout(new GridLayout(2, 4));
 
         controlPanel.add(gasButton, 0);
         controlPanel.add(turboOnButton, 1);

@@ -27,10 +27,10 @@ public class CarController {
     ArrayList<DrawableObject<?>> drawableEntities = new ArrayList<>();
 
     //entities that move (e.g. can have a velocity)
-    ArrayList<DrawableObject<Car>> movableEntities = new ArrayList<>();
+    ArrayList<DrawableObject<Car>> CarEntities = new ArrayList<>();
 
     //entities that don't move (CarWorkshop)
-    ArrayList<DrawableObject<Object>> immovableEntities = new ArrayList<>();
+    ArrayList<DrawableObject<Object>> imCarEntities = new ArrayList<>();
 
 
     //methods:
@@ -40,27 +40,27 @@ public class CarController {
         CarController cc = new CarController();
 
         //all drawable entities are added into the drawableEntities list,
-        //  then added into "movable" / "immovable" lists
+        //  then added into "Car" / "imCar" lists
         DrawableObject<Object> workshopDrawable = new DrawableObject<>(new CarWorkshop<Volvo240>(5), new Point(300, 300), "pics/VolvoBrand.jpg");
-        cc.immovableEntities.add(workshopDrawable);
+        cc.imCarEntities.add(workshopDrawable);
         cc.drawableEntities.add(workshopDrawable);
 
         DrawableObject<Car> volvoDrawable = new DrawableObject<>(new Volvo240(0, 0), new Point(0, 0), "pics/Volvo240.jpg");
-        cc.movableEntities.add(volvoDrawable);
+        cc.CarEntities.add(volvoDrawable);
         cc.drawableEntities.add(volvoDrawable);
 
 
         DrawableObject<Car> saab95Drawable = new DrawableObject<>(new Saab95(0, 100), new Point(0, 100), "pics/Saab95.jpg");
-        cc.movableEntities.add(saab95Drawable);
+        cc.CarEntities.add(saab95Drawable);
         cc.drawableEntities.add(saab95Drawable);
 
 
         DrawableObject<Car> scaniaDrawable = new DrawableObject<>(new Scania(0, 200), new Point(0, 200), "pics/Scania.jpg");
-        cc.movableEntities.add(scaniaDrawable);
+        cc.CarEntities.add(scaniaDrawable);
         cc.drawableEntities.add(scaniaDrawable);
 
         // Start a new view and send a reference of self
-        cc.frame = new CarView("CarSim 1.0", cc, cc.drawableEntities);
+        cc.frame = new CarView("CarSim 1.0", cc, cc.CarEntities);
 
         // Start the timer
         cc.timer.start();
@@ -71,8 +71,8 @@ public class CarController {
      * */
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            //update location of movable entities;
-            for (DrawableObject<Car> drawable : movableEntities) {
+            //update location of Car entities;
+            for (DrawableObject<Car> drawable : CarEntities) {
                 drawable.object.move();
                 int x = (int) Math.round(drawable.object.getX());
                 int y = (int) Math.round(drawable.object.getY());
@@ -86,32 +86,32 @@ public class CarController {
     // Calls the gas method for each car once
     void gas(int amount) {
         double gas = ((double) amount) / 100;
-        for (DrawableObject<Car> drawable : movableEntities) {
+        for (DrawableObject<Car> drawable : CarEntities) {
             drawable.object.gas(gas);
         }
     }
 
     void brake(int amount) {
         double brake = ((double) amount) / 100;
-        for (DrawableObject<Car> drawable : movableEntities) {
+        for (DrawableObject<Car> drawable : CarEntities) {
             drawable.object.brake(brake);
         }
     }
 
     void startCar() {
-        for (DrawableObject<Car> drawable : movableEntities) {
+        for (DrawableObject<Car> drawable : CarEntities) {
             drawable.object.startEngine();
         }
     }
 
     void stopCar() {
-        for (DrawableObject<Car> drawable : movableEntities) {
+        for (DrawableObject<Car> drawable : CarEntities) {
             drawable.object.stopEngine();
         }
     }
 
     void setTurboOn() {
-        for (DrawableObject<Car> drawable : movableEntities) {
+        for (DrawableObject<Car> drawable : CarEntities) {
             if (drawable.object instanceof Saab95) {
                 ((Saab95) drawable.object).setTurboOn();
             }
@@ -119,7 +119,7 @@ public class CarController {
     }
 
     void setTurboOff() {
-        for (DrawableObject<Car> drawable : movableEntities) {
+        for (DrawableObject<Car> drawable : CarEntities) {
             if (drawable.object instanceof Saab95) {
                 ((Saab95) drawable.object).setTurboOff();
             }
@@ -127,7 +127,7 @@ public class CarController {
     }
 
     void liftBed(int amount) {
-        for (DrawableObject<Car> drawable : movableEntities) {
+        for (DrawableObject<Car> drawable : CarEntities) {
             if (drawable.object instanceof Scania) {
                 ((Scania) drawable.object).raise(amount);
             }
@@ -135,7 +135,7 @@ public class CarController {
     }
 
     void lowerBed(int amount) {
-        for (DrawableObject<Car> drawable : movableEntities) {
+        for (DrawableObject<Car> drawable : CarEntities) {
             if (drawable.object instanceof Scania) {
                 ((Scania) drawable.object).lower(amount);
             }
