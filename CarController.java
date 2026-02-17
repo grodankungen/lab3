@@ -1,7 +1,7 @@
-import src.Car;
-import src.Volvo240;
+import src.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -22,8 +22,16 @@ public class CarController {
 
     // The frame that represents this instance View of the MVC pattern
     CarView frame;
-    // A list of cars, modify if needed
-    ArrayList<Car> cars = new ArrayList<>();
+
+    //list of all drawable entities (used by DrawPanel)
+    ArrayList<DrawableObject<?>> drawableEntities = new ArrayList<>();
+
+    //entities that move (e.g. can have a velocity)
+    ArrayList<DrawableObject<Car>> movableEntities = new ArrayList<>();
+
+    //entities that don't move (CarWorkshop)
+    ArrayList<DrawableObject<Object>> immovableEntities = new ArrayList<>();
+
 
     //methods:
 
@@ -31,10 +39,28 @@ public class CarController {
         // Instance of this class
         CarController cc = new CarController();
 
-        cc.cars.add(new Volvo240());
+        //all drawable entities are added into the drawableEntities list,
+        //  then added into "movable" / "immovable" lists
+        DrawableObject<Object> workshopDrawable = new DrawableObject<>(new CarWorkshop<Volvo240>(5), new Point(300, 300), "pics/VolvoBrand.jpg");
+        cc.immovableEntities.add(workshopDrawable);
+        cc.drawableEntities.add(workshopDrawable);
+
+        DrawableObject<Car> volvoDrawable = new DrawableObject<>(new Volvo240(0, 0), new Point(0, 0), "pics/Volvo240.jpg");
+        cc.movableEntities.add(volvoDrawable);
+        cc.drawableEntities.add(volvoDrawable);
+
+
+        DrawableObject<Car> saab95Drawable = new DrawableObject<>(new Saab95(0, 100), new Point(0, 100), "pics/Saab95.jpg");
+        cc.movableEntities.add(saab95Drawable);
+        cc.drawableEntities.add(saab95Drawable);
+
+
+        DrawableObject<Car> scaniaDrawable = new DrawableObject<>(new Scania(0, 200), new Point(0, 200), "pics/Scania.jpg");
+        cc.movableEntities.add(scaniaDrawable);
+        cc.drawableEntities.add(scaniaDrawable);
 
         // Start a new view and send a reference of self
-        cc.frame = new CarView("CarSim 1.0", cc);
+        cc.frame = new CarView("CarSim 1.0", cc, cc.drawableEntities);
 
         // Start the timer
         cc.timer.start();
@@ -45,11 +71,12 @@ public class CarController {
      * */
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            for (Car car : cars) {
-                car.move();
-                int x = (int) Math.round(car.getX());
-                int y = (int) Math.round(car.getY());
-                frame.drawPanel.moveit(x, y);
+            //update location of movable entities;
+            for (DrawableObject<Car> drawable : movableEntities) {
+                drawable.object.move();
+                int x = (int) Math.round(drawable.object.getX());
+                int y = (int) Math.round(drawable.object.getY());
+                frame.drawPanel.moveit(drawable, x, y);
                 // repaint() calls the paintComponent method of the panel
                 frame.drawPanel.repaint();
             }
@@ -59,9 +86,9 @@ public class CarController {
     // Calls the gas method for each car once
     void gas(int amount) {
         double gas = ((double) amount) / 100;
-        for (Car car : cars
+        for (DrawableObject<Car> drawable : movableEntities
         ) {
-            car.gas(gas);
+            drawable.object.gas(gas);
         }
     }
 }
