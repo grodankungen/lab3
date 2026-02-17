@@ -86,9 +86,59 @@ public class CarController {
     // Calls the gas method for each car once
     void gas(int amount) {
         double gas = ((double) amount) / 100;
-        for (DrawableObject<Car> drawable : movableEntities
-        ) {
+        for (DrawableObject<Car> drawable : movableEntities) {
             drawable.object.gas(gas);
+        }
+    }
+
+    void brake(int amount) {
+        double brake = ((double) amount) / 100;
+        for (DrawableObject<Car> drawable : movableEntities) {
+            drawable.object.brake(brake);
+        }
+    }
+
+    void startCar() {
+        for (DrawableObject<Car> drawable : movableEntities) {
+            drawable.object.startEngine();
+        }
+    }
+
+    void stopCar() {
+        for (DrawableObject<Car> drawable : movableEntities) {
+            drawable.object.stopEngine();
+        }
+    }
+
+    void setTurboOn() {
+        for (DrawableObject<Car> drawable : movableEntities) {
+            if (drawable.object instanceof Saab95) {
+                ((Saab95) drawable.object).setTurboOn();
+            }
+        }
+    }
+
+    void setTurboOff() {
+        for (DrawableObject<Car> drawable : movableEntities) {
+            if (drawable.object instanceof Saab95) {
+                ((Saab95) drawable.object).setTurboOff();
+            }
+        }
+    }
+
+    void liftBed(int amount) {
+        for (DrawableObject<Car> drawable : movableEntities) {
+            if (drawable.object instanceof Scania) {
+                ((Scania) drawable.object).raise(amount);
+            }
+        }
+    }
+
+    void lowerBed(int amount) {
+        for (DrawableObject<Car> drawable : movableEntities) {
+            if (drawable.object instanceof Scania) {
+                ((Scania) drawable.object).lower(amount);
+            }
         }
     }
 }

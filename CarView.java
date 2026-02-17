@@ -26,9 +26,15 @@ public class CarView extends JFrame {
     JPanel controlPanel = new JPanel();
 
     JPanel gasPanel = new JPanel();
+    JPanel bedAnglePanel = new JPanel();
+
     JSpinner gasSpinner = new JSpinner();
+    JSpinner bedAngleSpinner = new JSpinner();
+
     int gasAmount = 0;
+    int bedAngle = 0;
     JLabel gasLabel = new JLabel("Amount of gas");
+    JLabel bedAngleLabel = new JLabel("Bed raise angle");
 
     JButton gasButton = new JButton("Gas");
     JButton brakeButton = new JButton("Brake");
@@ -58,15 +64,24 @@ public class CarView extends JFrame {
         this.add(drawPanel);
 
 
-        SpinnerModel spinnerModel =
+
+        SpinnerModel gasSpinnerModel =
                 new SpinnerNumberModel(0, //initial value
                         0, //min
                         100, //max
                         1);//step
-        gasSpinner = new JSpinner(spinnerModel);
+        gasSpinner = new JSpinner(gasSpinnerModel);
         gasSpinner.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
-                gasAmount = (int) ((JSpinner) e.getSource()).getValue();
+                gasAmount = (int) ((JSpinner)e.getSource()).getValue();
+            }
+        });
+
+        SpinnerModel bedSpinnerModel = new SpinnerNumberModel(0, 0, 70, 1);
+        bedAngleSpinner = new JSpinner(bedSpinnerModel);
+        bedAngleSpinner.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                bedAngle = (int) ((JSpinner)e.getSource()).getValue();
             }
         });
 
@@ -76,7 +91,13 @@ public class CarView extends JFrame {
 
         this.add(gasPanel);
 
-        controlPanel.setLayout(new GridLayout(2, 4));
+        bedAnglePanel.setLayout(new BorderLayout());
+        bedAnglePanel.add(bedAngleLabel, BorderLayout.PAGE_START);
+        bedAnglePanel.add(bedAngleSpinner, BorderLayout.PAGE_END);
+
+        this.add(bedAnglePanel);
+
+        controlPanel.setLayout(new GridLayout(2,4));
 
         controlPanel.add(gasButton, 0);
         controlPanel.add(turboOnButton, 1);
@@ -106,6 +127,55 @@ public class CarView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 carC.gas(gasAmount);
+            }
+        });
+
+        brakeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.brake(gasAmount);
+            }
+        });
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.startCar();
+            }
+        });
+
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.stopCar();
+            }
+        });
+
+        turboOnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.setTurboOn();
+            }
+        });
+
+        turboOffButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.setTurboOff();
+            }
+        });
+
+        liftBedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.liftBed(bedAngle);
+            }
+        });
+
+        lowerBedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carC.lowerBed(bedAngle);
             }
         });
 
