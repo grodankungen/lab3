@@ -1,14 +1,11 @@
+import UIElements.Button;
+import UIElements.ControlPanel;
 import src.Car;
 import src.CarWorkshop;
 import src.Volvo240;
 
-import javax.naming.ldap.Control;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
@@ -16,57 +13,55 @@ import java.util.ArrayList;
  * It initializes with being center on the screen and attaching it's controller in it's state.
  * It communicates with the Controller by calling methods of it when an action fires of in
  * each of it's components.
- * TODO: Write more actionListeners and wire the rest of the buttons
  **/
 
 public class CarView extends JFrame {
     private static final int X = 800;
     private static final int Y = 800;
-    private int gasAmount = 0;
-    private int bedAngle = 0;
 
     // The controller member
     CarController carC;
     DrawPanel drawPanel;
 
-    JPanel gasPanel = new JPanel();
-    JLabel gasLabel = new JLabel("Amount of gas");
-    JSpinner gasSpinner = new JSpinner();
+    UIElements.Button gasButton;
+    UIElements.Button brakeButton;
+    UIElements.Button turboOnButton;
+    UIElements.Button turboOffButton;
+    UIElements.Button liftBedButton;
+    UIElements.Button lowerBedButton;
 
-    JPanel bedAnglePanel = new JPanel();
-    JLabel bedAngleLabel = new JLabel("Bed raise angle");
-    JSpinner bedAngleSpinner = new JSpinner();
+    UIElements.Button startButton;
+    UIElements.Button stopButton;
 
-    Button gasButton;
-    Button brakeButton;
-    Button turboOnButton;
-    Button turboOffButton;
-    Button liftBedButton;
-    Button lowerBedButton;
-
-    Button startButton;
-    Button stopButton;
+    Spinner gasSpinner;
+    Spinner bedSpinner;
 
     // Constructor
     public CarView(String framename, CarController cc, ArrayList<DrawableObject<Car>> carEntities, ArrayList<DrawableObject<CarWorkshop<Volvo240>>> workshopEntities) {
         this.carC = cc;
         this.drawPanel = new DrawPanel(X, Y - 240, carEntities, workshopEntities);
 
-        gasButton = new Button("Gas", () -> carC.gas(gasAmount));
-        brakeButton = new Button("Brake", () -> carC.brake(gasAmount));
-        turboOnButton = new Button("Saab Turbo on", () -> carC.setTurboOn());
-        turboOffButton = new Button("Saab Turbo off", () -> carC.setTurboOff());
-        liftBedButton = new Button("Scania Lift Bed", () -> carC.liftBed(bedAngle));
-        lowerBedButton = new Button("Lower Lift Bed", () -> carC.lowerBed(bedAngle));
-
-        startButton = new Button("Start all cars", () -> carC.startCar());
-        startButton.setBackground(Color.GREEN);
-
-        stopButton = new Button("Stop all cars", () -> carC.stopCar());
-        stopButton.setBackground(Color.RED);
-
+        createUI();
         initComponents(framename);
+    }
 
+    private void createUI() {
+        this.gasSpinner = new Spinner(new SpinnerNumberModel(0, 0, 100, 1));
+        this.gasButton = new UIElements.Button("Gas", () -> carC.gas(gasSpinner.getAmount()));
+        this.brakeButton = new UIElements.Button("Brake", () -> carC.brake(gasSpinner.getAmount()));
+
+        this.turboOnButton = new UIElements.Button("Saab Turbo on", () -> carC.setTurboOn());
+        this.turboOffButton = new UIElements.Button("Saab Turbo off", () -> carC.setTurboOff());
+
+        this.bedSpinner = new Spinner(new SpinnerNumberModel(0, 0, 70, 1));
+        this.liftBedButton = new UIElements.Button("Scania Lift Bed", () -> carC.liftBed(bedSpinner.getAmount()));
+        this.lowerBedButton = new UIElements.Button("Lower Lift Bed", () -> carC.lowerBed(bedSpinner.getAmount()));
+
+        this.startButton = new UIElements.Button("Start all cars", () -> carC.startCar());
+        this.startButton.setBackground(Color.GREEN);
+
+        this.stopButton = new Button("Stop all cars", () -> carC.stopCar());
+        this.stopButton.setBackground(Color.RED);
     }
 
     // Sets everything in place and fits everything
@@ -78,37 +73,11 @@ public class CarView extends JFrame {
 
         this.add(drawPanel);
 
+        // Spinners
+        setupSpinner("Amount of gas", gasSpinner);
+        setupSpinner("Bed raise angle", bedSpinner);
 
-        SpinnerModel gasSpinnerModel = new SpinnerNumberModel(0, //initial value
-                0, //min
-                100, //max
-                1);//step
-        gasSpinner = new JSpinner(gasSpinnerModel);
-        gasSpinner.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                gasAmount = (int) ((JSpinner) e.getSource()).getValue();
-            }
-        });
-
-        SpinnerModel bedSpinnerModel = new SpinnerNumberModel(0, 0, 70, 1);
-        bedAngleSpinner = new JSpinner(bedSpinnerModel);
-        bedAngleSpinner.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                bedAngle = (int) ((JSpinner) e.getSource()).getValue();
-            }
-        });
-
-        gasPanel.setLayout(new BorderLayout());
-        gasPanel.add(gasLabel, BorderLayout.PAGE_START);
-        gasPanel.add(gasSpinner, BorderLayout.PAGE_END);
-        this.add(gasPanel);
-
-        bedAnglePanel.setLayout(new BorderLayout());
-        bedAnglePanel.add(bedAngleLabel, BorderLayout.PAGE_START);
-        bedAnglePanel.add(bedAngleSpinner, BorderLayout.PAGE_END);
-        this.add(bedAnglePanel);
-
-        // Control Panel
+        // Buttons
         ControlPanel controlPanel = new ControlPanel(
                 0, 3,
                 new Dimension((X / 2) + 4, 200),
@@ -142,5 +111,15 @@ public class CarView extends JFrame {
         this.setVisible(true);
         // Make sure the frame exits when "x" is pressed
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void setupSpinner(String labelName, Spinner spinner) {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel(labelName);
+
+        panel.setLayout(new BorderLayout());
+        panel.add(label, BorderLayout.PAGE_START);
+        panel.add(spinner, BorderLayout.PAGE_END);
+        this.add(panel);
     }
 }
