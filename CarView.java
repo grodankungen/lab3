@@ -8,6 +8,7 @@ import src.Volvo240;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class represents the full view of the MVC pattern of your car simulator.
@@ -38,9 +39,9 @@ public class CarView extends JFrame {
     Spinner bedSpinner;
 
     // Constructor
-    public CarView(String framename, CarController cc, ArrayList<DrawableObject<Car>> carEntities, ArrayList<DrawableObject<CarWorkshop<Volvo240>>> workshopEntities) {
+    public CarView(String framename, CarController cc, ArrayList<DrawableObject> drawableObjects) {
         this.carC = cc;
-        this.drawPanel = new DrawPanel(X, Y - 240, carEntities, workshopEntities);
+        this.drawPanel = new DrawPanel(X, Y - 240, drawableObjects);
 
         createUI();
         initComponents(framename);
