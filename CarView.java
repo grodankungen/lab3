@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * It initializes with being center on the screen and attaching it's controller in it's state.
  * It communicates with the Controller by calling methods of it when an action fires of in
  * each of it's components.
- **/
+ */
 
 public class CarView extends JFrame {
     private static final int X = 800;
