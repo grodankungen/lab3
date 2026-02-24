@@ -1,5 +1,6 @@
-import UIElements.Button;
-import UIElements.ControlPanel;
+import UI_Elements.Button;
+import UI_Elements.ControlPanel;
+import UI_Elements.Spinner;
 import src.Car;
 import src.CarWorkshop;
 import src.Volvo240;
@@ -23,15 +24,15 @@ public class CarView extends JFrame {
     CarController carC;
     DrawPanel drawPanel;
 
-    UIElements.Button gasButton;
-    UIElements.Button brakeButton;
-    UIElements.Button turboOnButton;
-    UIElements.Button turboOffButton;
-    UIElements.Button liftBedButton;
-    UIElements.Button lowerBedButton;
+    UI_Elements.Button gasButton;
+    UI_Elements.Button brakeButton;
+    UI_Elements.Button turboOnButton;
+    UI_Elements.Button turboOffButton;
+    UI_Elements.Button liftBedButton;
+    UI_Elements.Button lowerBedButton;
 
-    UIElements.Button startButton;
-    UIElements.Button stopButton;
+    UI_Elements.Button startButton;
+    UI_Elements.Button stopButton;
 
     Spinner gasSpinner;
     Spinner bedSpinner;
@@ -47,17 +48,17 @@ public class CarView extends JFrame {
 
     private void createUI() {
         this.gasSpinner = new Spinner(new SpinnerNumberModel(0, 0, 100, 1));
-        this.gasButton = new UIElements.Button("Gas", () -> carC.gas(gasSpinner.getAmount()));
-        this.brakeButton = new UIElements.Button("Brake", () -> carC.brake(gasSpinner.getAmount()));
+        this.gasButton = new UI_Elements.Button("Gas", () -> carC.gas(gasSpinner.getAmount()));
+        this.brakeButton = new UI_Elements.Button("Brake", () -> carC.brake(gasSpinner.getAmount()));
 
-        this.turboOnButton = new UIElements.Button("Saab Turbo on", () -> carC.setTurboOn());
-        this.turboOffButton = new UIElements.Button("Saab Turbo off", () -> carC.setTurboOff());
+        this.turboOnButton = new UI_Elements.Button("Saab Turbo on", () -> carC.setTurboOn());
+        this.turboOffButton = new UI_Elements.Button("Saab Turbo off", () -> carC.setTurboOff());
 
         this.bedSpinner = new Spinner(new SpinnerNumberModel(0, 0, 70, 1));
-        this.liftBedButton = new UIElements.Button("Scania Lift Bed", () -> carC.liftBed(bedSpinner.getAmount()));
-        this.lowerBedButton = new UIElements.Button("Lower Lift Bed", () -> carC.lowerBed(bedSpinner.getAmount()));
+        this.liftBedButton = new UI_Elements.Button("Scania Lift Bed", () -> carC.liftBed(bedSpinner.getAmount()));
+        this.lowerBedButton = new UI_Elements.Button("Lower Lift Bed", () -> carC.lowerBed(bedSpinner.getAmount()));
 
-        this.startButton = new UIElements.Button("Start all cars", () -> carC.startCar());
+        this.startButton = new UI_Elements.Button("Start all cars", () -> carC.startCar());
         this.startButton.setBackground(Color.GREEN);
 
         this.stopButton = new Button("Stop all cars", () -> carC.stopCar());

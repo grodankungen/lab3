@@ -1,3 +1,5 @@
+package UI_Elements;
+
 import javax.swing.*;
 
 public class Spinner extends JSpinner {

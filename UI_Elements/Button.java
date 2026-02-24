@@ -1,4 +1,4 @@
-package UIElements;
+package UI_Elements;
 
 import javax.swing.*;
 
