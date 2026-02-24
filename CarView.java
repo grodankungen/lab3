@@ -2,6 +2,7 @@ import src.Car;
 import src.CarWorkshop;
 import src.Volvo240;
 
+import javax.naming.ldap.Control;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -21,44 +22,54 @@ import java.util.ArrayList;
 public class CarView extends JFrame {
     private static final int X = 800;
     private static final int Y = 800;
+    private int gasAmount = 0;
+    private int bedAngle = 0;
 
     // The controller member
     CarController carC;
-
     DrawPanel drawPanel;
 
-    JPanel controlPanel = new JPanel();
-
     JPanel gasPanel = new JPanel();
-    JPanel bedAnglePanel = new JPanel();
-
+    JLabel gasLabel = new JLabel("Amount of gas");
     JSpinner gasSpinner = new JSpinner();
+
+    JPanel bedAnglePanel = new JPanel();
+    JLabel bedAngleLabel = new JLabel("Bed raise angle");
     JSpinner bedAngleSpinner = new JSpinner();
 
-    int gasAmount = 0;
-    int bedAngle = 0;
-    JLabel gasLabel = new JLabel("Amount of gas");
-    JLabel bedAngleLabel = new JLabel("Bed raise angle");
+    Button gasButton;
+    Button brakeButton;
+    Button turboOnButton;
+    Button turboOffButton;
+    Button liftBedButton;
+    Button lowerBedButton;
 
-    JButton gasButton = new JButton("Gas");
-    JButton brakeButton = new JButton("Brake");
-    JButton turboOnButton = new JButton("Saab Turbo on");
-    JButton turboOffButton = new JButton("Saab Turbo off");
-    JButton liftBedButton = new JButton("Scania Lift Bed");
-    JButton lowerBedButton = new JButton("Lower Lift Bed");
-
-    JButton startButton = new JButton("Start all cars");
-    JButton stopButton = new JButton("Stop all cars");
+    Button startButton;
+    Button stopButton;
 
     // Constructor
     public CarView(String framename, CarController cc, ArrayList<DrawableObject<Car>> carEntities, ArrayList<DrawableObject<CarWorkshop<Volvo240>>> workshopEntities) {
         this.carC = cc;
         this.drawPanel = new DrawPanel(X, Y - 240, carEntities, workshopEntities);
+
+        gasButton = new Button("Gas", () -> carC.gas(gasAmount));
+        brakeButton = new Button("Brake", () -> carC.brake(gasAmount));
+        turboOnButton = new Button("Saab Turbo on", () -> carC.setTurboOn());
+        turboOffButton = new Button("Saab Turbo off", () -> carC.setTurboOff());
+        liftBedButton = new Button("Scania Lift Bed", () -> carC.liftBed(bedAngle));
+        lowerBedButton = new Button("Lower Lift Bed", () -> carC.lowerBed(bedAngle));
+
+        startButton = new Button("Start all cars", () -> carC.startCar());
+        startButton.setBackground(Color.GREEN);
+
+        stopButton = new Button("Stop all cars", () -> carC.stopCar());
+        stopButton.setBackground(Color.RED);
+
         initComponents(framename);
+
     }
 
     // Sets everything in place and fits everything
-    // TODO: Take a good look and make sure you understand how these methods and components work
     private void initComponents(String title) {
 
         this.setTitle(title);
@@ -90,96 +101,35 @@ public class CarView extends JFrame {
         gasPanel.setLayout(new BorderLayout());
         gasPanel.add(gasLabel, BorderLayout.PAGE_START);
         gasPanel.add(gasSpinner, BorderLayout.PAGE_END);
-
         this.add(gasPanel);
 
         bedAnglePanel.setLayout(new BorderLayout());
         bedAnglePanel.add(bedAngleLabel, BorderLayout.PAGE_START);
         bedAnglePanel.add(bedAngleSpinner, BorderLayout.PAGE_END);
-
         this.add(bedAnglePanel);
 
-        controlPanel.setLayout(new GridLayout(2, 4));
-
-        controlPanel.add(gasButton, 0);
-        controlPanel.add(turboOnButton, 1);
-        controlPanel.add(liftBedButton, 2);
-        controlPanel.add(brakeButton, 3);
-        controlPanel.add(turboOffButton, 4);
-        controlPanel.add(lowerBedButton, 5);
-        controlPanel.setPreferredSize(new Dimension((X / 2) + 4, 200));
+        // Control Panel
+        ControlPanel controlPanel = new ControlPanel(
+                0, 3,
+                new Dimension((X / 2) + 4, 200),
+                Color.CYAN,
+                gasButton,
+                turboOnButton,
+                liftBedButton,
+                brakeButton,
+                turboOffButton,
+                lowerBedButton
+        );
         this.add(controlPanel);
-        controlPanel.setBackground(Color.CYAN);
 
-
-        startButton.setBackground(Color.blue);
-        startButton.setForeground(Color.green);
-        startButton.setPreferredSize(new Dimension(X / 5 - 15, 200));
-        this.add(startButton);
-
-
-        stopButton.setBackground(Color.red);
-        stopButton.setForeground(Color.black);
-        stopButton.setPreferredSize(new Dimension(X / 5 - 15, 200));
-        this.add(stopButton);
-
-        // This actionListener is for the gas button only
-        // TODO: Create more for each component as necessary
-        gasButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.gas(gasAmount);
-            }
-        });
-
-        brakeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.brake(gasAmount);
-            }
-        });
-
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.startCar();
-            }
-        });
-
-        stopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.stopCar();
-            }
-        });
-
-        turboOnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.setTurboOn();
-            }
-        });
-
-        turboOffButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.setTurboOff();
-            }
-        });
-
-        liftBedButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.liftBed(bedAngle);
-            }
-        });
-
-        lowerBedButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.lowerBed(bedAngle);
-            }
-        });
+        ControlPanel startStopPanel = new ControlPanel(
+                2, 1,
+                new Dimension((X / 5) - 15, 200),
+                Color.BLACK,
+                startButton,
+                stopButton
+        );
+        this.add(startStopPanel);
 
         // Make the frame pack all it's components by respecting the sizes if possible.
         this.pack();
