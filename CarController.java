@@ -1,155 +1,123 @@
-import src.*;
+import UI_Elements.Button;
+import UI_Elements.ControlPanel;
+import UI_Elements.Spinner;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
-/*
- * This class represents the Controller part in the MVC pattern.
- * It's responsibilities is to listen to the View and responds in a appropriate manner by
- * modifying the model state and the updating the view.
+
+/**
+ * This class represents the full view of the MVC pattern of your car simulator.
+ * It initializes with being center on the screen and attaching it's controller in it's state.
+ * It communicates with the Controller by calling methods of it when an action fires of in
+ * each of it's components.
  */
 
-public class CarController {
-    // The delay (ms) corresponds to 20 updates a sec (hz)
-    private final int delay = 50;
-    // The timer is started with a listener (see below) that executes the statements
-    // each step between delays.
-    private Timer timer = new Timer(delay, new TimerListener());
+public class CarController extends JFrame {
+    private static final int X = 800;
+    private static final int Y = 800;
 
-    private HashMap<Car, DrawableObject> carEntities;
-    private HashMap<CarWorkshop, DrawableObject> workshopEntities;
+    // The controller member
+    CarModel carC;
+    DrawPanel drawPanel;
 
-    // The frame that represents this instance View of the MVC pattern
-    CarView frame;
+    Button gasButton;
+    Button brakeButton;
+    Button turboOnButton;
+    Button turboOffButton;
+    Button liftBedButton;
+    Button lowerBedButton;
 
-    // methods
-    static void main(String[] args) {
-        // Instance of this class
-        CarController cc = new CarController();
+    Button startButton;
+    Button stopButton;
 
-        cc.carEntities = new HashMap<>();
-        cc.carEntities.put(new Volvo240(0, 300), new DrawableObject(new Point(0, 300), "pics/Volvo240.jpg"));
-        cc.carEntities.put(new Saab95(0, 100), new DrawableObject(new Point(0, 100), "pics/Saab95.jpg"));
-        cc.carEntities.put(new Scania(0, 200),  new DrawableObject(new Point(0, 200), "pics/Scania.jpg"));
+    Spinner gasSpinner;
+    Spinner bedSpinner;
 
-        cc.workshopEntities = new HashMap<>();
-        cc.workshopEntities.put(
-                new CarWorkshop<Volvo240>(5, new Point(300, 300)),
-                new DrawableObject(new Point(300, 300), "pics/VolvoBrand.jpg")
+    // Constructor
+    public CarController(String framename, CarModel cc, ArrayList<DrawableObject> drawableObjects) {
+        this.carC = cc;
+        this.drawPanel = new DrawPanel(X, Y - 240, drawableObjects);
+
+        createUI();
+        initComponents(framename);
+    }
+
+    private void createUI() {
+        this.gasSpinner = new Spinner(new SpinnerNumberModel(0, 0, 100, 1));
+        this.gasButton = new Button("Gas", () -> carC.gas(gasSpinner.getAmount()));
+        this.brakeButton = new Button("Brake", () -> carC.brake(gasSpinner.getAmount()));
+
+        this.turboOnButton = new Button("Saab Turbo on", () -> carC.setTurboOn());
+        this.turboOffButton = new Button("Saab Turbo off", () -> carC.setTurboOff());
+
+        this.bedSpinner = new Spinner(new SpinnerNumberModel(0, 0, 70, 1));
+        this.liftBedButton = new Button("Scania Lift Bed", () -> carC.liftBed(bedSpinner.getAmount()));
+        this.lowerBedButton = new Button("Lower Lift Bed", () -> carC.lowerBed(bedSpinner.getAmount()));
+
+        this.startButton = new Button("Start all cars", () -> carC.startCar());
+        this.startButton.setBackground(Color.GREEN);
+
+        this.stopButton = new Button("Stop all cars", () -> carC.stopCar());
+        this.stopButton.setBackground(Color.RED);
+    }
+
+    // Sets everything in place and fits everything
+    private void initComponents(String title) {
+
+        this.setTitle(title);
+        this.setPreferredSize(new Dimension(X, Y));
+        this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+        this.add(drawPanel);
+
+        // Spinners
+        setupSpinner("Amount of gas", gasSpinner);
+        setupSpinner("Bed raise angle", bedSpinner);
+
+        // Buttons
+        ControlPanel controlPanel = new ControlPanel(
+                0, 3,
+                new Dimension((X / 2) + 4, 200),
+                Color.CYAN,
+                gasButton,
+                turboOnButton,
+                liftBedButton,
+                brakeButton,
+                turboOffButton,
+                lowerBedButton
         );
+        this.add(controlPanel);
 
-        ArrayList<DrawableObject> drawableObjects = new ArrayList<>();
-        drawableObjects.addAll(cc.carEntities.values());
-        drawableObjects.addAll(cc.workshopEntities.values());
+        ControlPanel startStopPanel = new ControlPanel(
+                2, 1,
+                new Dimension((X / 5) - 15, 200),
+                Color.BLACK,
+                startButton,
+                stopButton
+        );
+        this.add(startStopPanel);
 
-        // Start a new view and send a reference of self
-        cc.frame = new CarView("CarSim 1.0", cc, drawableObjects);
+        // Make the frame pack all it's components by respecting the sizes if possible.
+        this.pack();
 
-        // Start the timer
-        cc.timer.start();
+        // Get the computer screen resolution
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        // Center the frame
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+        // Make the frame visible
+        this.setVisible(true);
+        // Make sure the frame exits when "x" is pressed
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    /* Each step the TimerListener moves all the cars in the list and tells the
-     * view to update its images. Change this method to your needs.
-     */
-    private class TimerListener implements ActionListener {
-        /**
-         * Updates location of the Car entities
-         * Checks if a car touched a wall -> turn 180 degrees
-         * Checks if a car should be loaded into a workshop
-         */
-        public void actionPerformed(ActionEvent e) {
-            for (Car car : carEntities.keySet()) {
-                if (car.getX() > 800 || car.getX() < 0 || car.getY() > 560 || car.getY() < 0) {
-                    car.turnRight(180);
-                }
+    private void setupSpinner(String labelName, Spinner spinner) {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel(labelName);
 
-                for (CarWorkshop<?> workshop : workshopEntities.keySet()) {
-                    if (car.getX() > workshop.getX() - 10
-                            && car.getX() < workshop.getX() + 10
-                            && car.getY() > workshop.getY() - 10
-                            && car.getY() < workshop.getY() + 10) {
-
-                        if (car instanceof Volvo240) {  // TODO hur ska vi fixa detta för alla typer av workshops?
-                            CarWorkshop<Volvo240> volvoWorkshop = (CarWorkshop<Volvo240>) workshop;
-                            volvoWorkshop.loadCar((Volvo240) car);
-                        }
-                    }
-                }
-
-            }
-
-            for (Car car : carEntities.keySet()) {
-                car.move();
-                int x = (int) Math.round(car.getX());
-                int y = (int) Math.round(car.getY());
-                frame.drawPanel.moveit(carEntities.get(car), x, y);
-
-                // repaint() calls the paintComponent method of the panel
-                frame.drawPanel.repaint();
-            }
-        }
-    }
-
-    // Calls the gas method for each car once
-    void gas(int amount) {
-        double gas = ((double) amount) / 100;
-        for (Car car : carEntities.keySet()) {
-            car.gas(gas);
-        }
-    }
-
-    void brake(int amount) {
-        double brake = ((double) amount) / 100;
-        for (Car car : carEntities.keySet()) {
-            car.brake(brake);
-        }
-    }
-
-    void startCar() {
-        for (Car car : carEntities.keySet()) {
-            car.startEngine();
-        }
-    }
-
-    void stopCar() {
-        for (Car car : carEntities.keySet()) {
-            car.stopEngine();
-        }
-    }
-
-    void setTurboOn() {
-        for (Car car : carEntities.keySet()) {
-            if (car instanceof Saab95) {
-                ((Saab95) car).setTurboOn();
-            }
-        }
-    }
-
-    void setTurboOff() {
-        for (Car car : carEntities.keySet()) {
-            if (car instanceof Saab95) {
-                ((Saab95) car).setTurboOff();
-            }
-        }
-    }
-
-    void liftBed(int amount) {
-        for (Car car : carEntities.keySet()) {
-            if (car instanceof Scania) {
-                ((Scania) car).raise(amount);
-            }
-        }
-    }
-
-    void lowerBed(int amount) {
-        for (Car car : carEntities.keySet()) {
-            if (car instanceof Scania) {
-                ((Scania) car).lower(amount);
-            }
-        }
+        panel.setLayout(new BorderLayout());
+        panel.add(label, BorderLayout.PAGE_START);
+        panel.add(spinner, BorderLayout.PAGE_END);
+        this.add(panel);
     }
 }

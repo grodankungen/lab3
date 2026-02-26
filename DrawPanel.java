@@ -1,14 +1,5 @@
-import src.Car;
-import src.CarWorkshop;
-import src.Volvo240;
-
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 // This panel represents the animated part of the view with the car images.
@@ -16,7 +7,6 @@ import javax.swing.*;
 public class DrawPanel extends JPanel {
     ArrayList<DrawableObject> drawableObjects;
 
-    // TODO: Make this general for all cars
     void moveit(DrawableObject drawable, int x, int y) {
         drawable.point.x = x;
         drawable.point.y = y;
@@ -41,7 +31,5 @@ public class DrawPanel extends JPanel {
             g.drawImage(dr.image, dr.point.x, dr.point.y, null);
             g.drawImage(dr.image, dr.point.x, dr.point.y, null);
         }
-
-
     }
 }
