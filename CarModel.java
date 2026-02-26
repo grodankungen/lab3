@@ -1,7 +1,6 @@
 import src.*;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,44 +11,36 @@ import java.util.HashMap;
  * modifying the model state and the updating the view.
  */
 
-public class CarModel {
-    // The delay (ms) corresponds to 20 updates a sec (hz)
-    private final int delay = 50;
-    // The timer is started with a listener (see below) that executes the statements
-    // each step between delays.
-    private Timer timer = new Timer(delay, new TimerListener());
+public class CarModel implements Observable {
 
-    private HashMap<Car, DrawableObject> carEntities;
-    private HashMap<CarWorkshop, DrawableObject> workshopEntities;
+    private final HashMap<Car, DrawableObject> carEntities;
+    private final HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities;
 
-    // The frame that represents this instance View of the MVC pattern
-    CarController frame;
+    private final ArrayList<Observer> observers = new ArrayList<>();
 
-    // methods
-    static void main(String[] args) {
-        // Instance of this class
-        CarModel cc = new CarModel();
+    public CarModel(HashMap<Car, DrawableObject> carEntities, HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities) {
 
-        cc.carEntities = new HashMap<>();
-        cc.carEntities.put(new Volvo240(0, 300), new DrawableObject(new Point(0, 300), "pics/Volvo240.jpg"));
-        cc.carEntities.put(new Saab95(0, 100), new DrawableObject(new Point(0, 100), "pics/Saab95.jpg"));
-        cc.carEntities.put(new Scania(0, 200),  new DrawableObject(new Point(0, 200), "pics/Scania.jpg"));
-
-        cc.workshopEntities = new HashMap<>();
-        cc.workshopEntities.put(
-                new CarWorkshop<Volvo240>(5, new Point(300, 300)),
-                new DrawableObject(new Point(300, 300), "pics/VolvoBrand.jpg")
-        );
-
-        ArrayList<DrawableObject> drawableObjects = new ArrayList<>();
-        drawableObjects.addAll(cc.carEntities.values());
-        drawableObjects.addAll(cc.workshopEntities.values());
-
-        // Start a new view and send a reference of self
-        cc.frame = new CarController("CarSim 1.0", cc, drawableObjects);
+        this.carEntities = carEntities;
+        this.workshopEntities = workshopEntities;
 
         // Start the timer
-        cc.timer.start();
+        // The timer is started with a listener (see below) that executes the statements
+        // each step between delays.
+        // The delay (ms) corresponds to 20 updates a sec (hz)
+        int delay = 50;
+        Timer timer = new Timer(delay, new TimerListener());
+        timer.start();
+    }
+
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void multicastCarUpdate() {
+        for (Observer obs : observers) {
+            obs.actOnSignal();
+        }
     }
 
     /* Each step the TimerListener moves all the cars in the list and tells the
@@ -68,10 +59,7 @@ public class CarModel {
                 }
 
                 for (CarWorkshop<?> workshop : workshopEntities.keySet()) {
-                    if (car.getX() > workshop.getX() - 10
-                            && car.getX() < workshop.getX() + 10
-                            && car.getY() > workshop.getY() - 10
-                            && car.getY() < workshop.getY() + 10) {
+                    if (car.getX() > workshop.getX() - 10 && car.getX() < workshop.getX() + 10 && car.getY() > workshop.getY() - 10 && car.getY() < workshop.getY() + 10) {
 
                         if (car instanceof Volvo240) {  // TODO hur ska vi fixa detta för alla typer av workshops?
                             CarWorkshop<Volvo240> volvoWorkshop = (CarWorkshop<Volvo240>) workshop;
@@ -86,12 +74,16 @@ public class CarModel {
                 car.move();
                 int x = (int) Math.round(car.getX());
                 int y = (int) Math.round(car.getY());
-                frame.drawPanel.moveit(carEntities.get(car), x, y);
+                updatePoint(carEntities.get(car), x, y);
 
-                // repaint() calls the paintComponent method of the panel
-                frame.drawPanel.repaint();
+                multicastCarUpdate();
             }
         }
+    }
+
+    private void updatePoint(DrawableObject drawable, int x, int y) {
+        drawable.point.x = x;
+        drawable.point.y = y;
     }
 
     // Calls the gas method for each car once

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * each of it's components.
  */
 
-public class CarController extends JFrame {
+public class CarController extends JFrame implements Observer {
     private static final int X = 800;
     private static final int Y = 800;
 
@@ -35,12 +35,17 @@ public class CarController extends JFrame {
     Spinner bedSpinner;
 
     // Constructor
-    public CarController(String framename, CarModel cc, ArrayList<DrawableObject> drawableObjects) {
-        this.carC = cc;
+    public CarController(String framename, CarModel model, ArrayList<DrawableObject> drawableObjects) {
+        this.carC = model;
         this.drawPanel = new DrawPanel(X, Y - 240, drawableObjects);
 
         createUI();
         initComponents(framename);
+    }
+
+    @Override
+    public void actOnSignal() {
+        this.repaint();
     }
 
     private void createUI() {
