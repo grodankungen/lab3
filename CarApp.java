@@ -21,7 +21,7 @@ public class CarApp {
 
 
         CarModel model = new CarModel(carEntities, workshopEntities);
-        CarController controller = new CarController("carsim the best", model, drawableObjects);
+        CarWidget controller = new CarWidget("carsim the best", model, drawableObjects);
 
         model.addObserver(controller);
 
