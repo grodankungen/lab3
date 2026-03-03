@@ -11,7 +11,7 @@ import java.util.HashMap;
  * modifying the model state and the updating the view.
  */
 
-public class CarModel implements Observable {
+public class CarModel implements Observable<Car> {
 
     private final HashMap<Car, DrawableObject> carEntities;
     private final HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities;
@@ -33,11 +33,18 @@ public class CarModel implements Observable {
     }
 
 
+    @Override
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
 
-    public void multicastCarUpdate() {
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(Car c) {
         for (Observer obs : observers) {
             obs.actOnSignal();
         }
@@ -58,11 +65,11 @@ public class CarModel implements Observable {
                     car.turnRight(180);
                 }
 
-                for (CarWorkshop<?> workshop : workshopEntities.keySet()) {
+                for (CarWorkshop<Volvo240> workshop : workshopEntities.keySet()) {
                     if (car.getX() > workshop.getX() - 10 && car.getX() < workshop.getX() + 10 && car.getY() > workshop.getY() - 10 && car.getY() < workshop.getY() + 10) {
 
                         if (car instanceof Volvo240) {  // TODO hur ska vi fixa detta för alla typer av workshops?
-                            CarWorkshop<Volvo240> volvoWorkshop = (CarWorkshop<Volvo240>) workshop;
+                            CarWorkshop<Volvo240> volvoWorkshop = workshop;
                             volvoWorkshop.loadCar((Volvo240) car);
                         }
                     }
@@ -76,7 +83,7 @@ public class CarModel implements Observable {
                 int y = (int) Math.round(car.getY());
                 updatePoint(carEntities.get(car), x, y);
 
-                multicastCarUpdate();
+                notifyObservers(car);
             }
         }
     }

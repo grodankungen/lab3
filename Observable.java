@@ -1,5 +1,9 @@
 
-public interface Observable {
+public interface Observable<T> {
 
-    public void addObserver(Observer observer);
+    void addObserver(Observer observer);
+
+    void removeObserver(Observer observer);
+
+    void notifyObservers(T event);
 }
