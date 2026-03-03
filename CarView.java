@@ -18,7 +18,7 @@ public class CarView extends JFrame implements Observer {
     private static final int Y = 800;
 
     // The controller member
-    CarController controller;
+    ICarController controller;
     DrawPanel drawPanel;
 
     Button gasButton;
@@ -35,7 +35,7 @@ public class CarView extends JFrame implements Observer {
     Spinner bedSpinner;
 
     // Constructor
-    public CarView(String framename, CarController controller, ArrayList<DrawableObject> drawableObjects) {
+    public CarView(String framename, ICarController controller, ArrayList<DrawableObject> drawableObjects) {
         this.controller = controller;
         this.drawPanel = new DrawPanel(X, Y - 240, drawableObjects);
 
