@@ -31,6 +31,9 @@ public class CarView extends JFrame implements Observer {
     Button startButton;
     Button stopButton;
 
+    Button addCarButton;
+    Button removeCarButton;
+
     Spinner gasSpinner;
     Spinner bedSpinner;
 
@@ -65,6 +68,9 @@ public class CarView extends JFrame implements Observer {
 
         this.stopButton = new Button("Stop all cars", () -> controller.stopCar());
         this.stopButton.setBackground(Color.RED);
+
+        this.addCarButton= new Button("Add car", () -> {});
+        this.removeCarButton= new Button("Remove car", () -> {});
     }
 
     // Sets everything in place and fits everything
@@ -82,15 +88,17 @@ public class CarView extends JFrame implements Observer {
 
         // Buttons
         ControlPanel controlPanel = new ControlPanel(
-                0, 3,
-                new Dimension((X / 2) + 4, 200),
+                0, 4,
+                new Dimension((X / 2) + 10, 200),
                 Color.CYAN,
                 gasButton,
                 turboOnButton,
                 liftBedButton,
+                lowerBedButton,
                 brakeButton,
                 turboOffButton,
-                lowerBedButton
+                addCarButton,
+                removeCarButton
         );
         this.add(controlPanel);
 
