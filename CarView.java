@@ -13,12 +13,12 @@ import java.util.ArrayList;
  * each of it's components.
  */
 
-public class CarWidget extends JFrame implements Observer {
+public class CarView extends JFrame implements Observer {
     private static final int X = 800;
     private static final int Y = 800;
 
     // The controller member
-    CarModel carC;
+    CarController controller;
     DrawPanel drawPanel;
 
     Button gasButton;
@@ -35,8 +35,8 @@ public class CarWidget extends JFrame implements Observer {
     Spinner bedSpinner;
 
     // Constructor
-    public CarWidget(String framename, CarModel model, ArrayList<DrawableObject> drawableObjects) {
-        this.carC = model;
+    public CarView(String framename, CarController controller, ArrayList<DrawableObject> drawableObjects) {
+        this.controller = controller;
         this.drawPanel = new DrawPanel(X, Y - 240, drawableObjects);
 
         createUI();
@@ -50,20 +50,20 @@ public class CarWidget extends JFrame implements Observer {
 
     private void createUI() {
         this.gasSpinner = new Spinner(new SpinnerNumberModel(0, 0, 100, 1));
-        this.gasButton = new Button("Gas", () -> carC.gas(gasSpinner.getAmount()));
-        this.brakeButton = new Button("Brake", () -> carC.brake(gasSpinner.getAmount()));
+        this.gasButton = new Button("Gas", () -> controller.gas(gasSpinner.getAmount()));
+        this.brakeButton = new Button("Brake", () -> controller.brake(gasSpinner.getAmount()));
 
-        this.turboOnButton = new Button("Saab Turbo on", () -> carC.setTurboOn());
-        this.turboOffButton = new Button("Saab Turbo off", () -> carC.setTurboOff());
+        this.turboOnButton = new Button("Saab Turbo on", () -> controller.setTurboOn());
+        this.turboOffButton = new Button("Saab Turbo off", () -> controller.setTurboOff());
 
         this.bedSpinner = new Spinner(new SpinnerNumberModel(0, 0, 70, 1));
-        this.liftBedButton = new Button("Scania Lift Bed", () -> carC.liftBed(bedSpinner.getAmount()));
-        this.lowerBedButton = new Button("Lower Lift Bed", () -> carC.lowerBed(bedSpinner.getAmount()));
+        this.liftBedButton = new Button("Scania Lift Bed", () -> controller.liftBed(bedSpinner.getAmount()));
+        this.lowerBedButton = new Button("Lower Lift Bed", () -> controller.lowerBed(bedSpinner.getAmount()));
 
-        this.startButton = new Button("Start all cars", () -> carC.startCar());
+        this.startButton = new Button("Start all cars", () -> controller.startCar());
         this.startButton.setBackground(Color.GREEN);
 
-        this.stopButton = new Button("Stop all cars", () -> carC.stopCar());
+        this.stopButton = new Button("Stop all cars", () -> controller.stopCar());
         this.stopButton.setBackground(Color.RED);
     }
 
