@@ -44,4 +44,6 @@ public class CarController implements ICarController {
     public void lowerBed(int amount) {
         model.lowerBed(amount);
     }
+
+
 }
