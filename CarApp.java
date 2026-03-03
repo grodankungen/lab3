@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 public class CarApp {
     static void main() {
-
         HashMap<Car, DrawableObject> carEntities = new HashMap<>();
         HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities = new HashMap<>();
 
@@ -21,7 +20,7 @@ public class CarApp {
 
 
         CarModel model = new CarModel(carEntities, workshopEntities);
-        CarWidget controller = new CarWidget("carsim the best", model, drawableObjects);
+        CarController controller = new CarController(model);
 
         model.addObserver(controller);
 
