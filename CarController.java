@@ -36,4 +36,6 @@ public class CarController {
     public void lowerBed(int amount) {
         model.lowerBed(amount);
     }
+
+
 }
