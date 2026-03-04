@@ -14,4 +14,8 @@ public interface ICarController {
     void liftBed(int amount);
 
     void lowerBed(int amount);
+
+    void addCar();
+
+    void removeCar();
 }

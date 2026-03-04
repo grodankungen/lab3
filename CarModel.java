@@ -32,7 +32,6 @@ public class CarModel implements Observable {
         timer.start();
     }
 
-
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
@@ -67,7 +66,6 @@ public class CarModel implements Observable {
                         }
                     }
                 }
-
             }
 
             for (Car car : carEntities.keySet()) {

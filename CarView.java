@@ -69,8 +69,8 @@ public class CarView extends JFrame implements Observer {
         this.stopButton = new Button("Stop all cars", () -> controller.stopCar());
         this.stopButton.setBackground(Color.RED);
 
-        this.addCarButton= new Button("Add car", () -> {});
-        this.removeCarButton= new Button("Remove car", () -> {});
+        this.addCarButton= new Button("Add car", () -> controller.addCar());
+        this.removeCarButton= new Button("Remove car", () -> controller.removeCar());
     }
 
     // Sets everything in place and fits everything

@@ -45,5 +45,14 @@ public class CarController implements ICarController {
         model.lowerBed(amount);
     }
 
+    @Override
+    public void addCar() {
+        // TODO
+    }
+
+    @Override
+    public void removeCar() {
+        // TODO
+    }
 
 }
