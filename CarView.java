@@ -51,7 +51,15 @@ public class CarView extends JFrame implements Observer<Car, EventType> {
 
     @Override
     public void update(Car car, EventType eventType) {
-        this.repaint();
+
+        switch (eventType) {
+            case REPAINT -> this.repaint();
+            case REMOVE -> this.removeDrawable(car);
+        }
+    }
+
+    private void removeDrawable(Car car) {
+
     }
 
     private void createUI() {
