@@ -1,7 +1,6 @@
 import UI_Elements.Button;
 import UI_Elements.ControlPanel;
 import UI_Elements.Spinner;
-import src.Car;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +13,10 @@ import java.util.ArrayList;
  * each of it's components.
  */
 
-public class CarView extends JFrame implements Observer<Car, EventType> {
+public class CarView extends JFrame implements Observer<DrawableObject, EventType> {
     private final int X;
     private final int Y;
+    private final ArrayList<DrawableObject> drawableObjects;
 
     // The controller member
     ICarController controller;
@@ -43,23 +43,25 @@ public class CarView extends JFrame implements Observer<Car, EventType> {
         X = window_x;
         Y = window_y;
         this.controller = controller;
-        this.drawPanel = new DrawPanel(canvas_x, canvas_y, drawableObjects);
+        this.drawableObjects = drawableObjects;
+        this.drawPanel = new DrawPanel(canvas_x, canvas_y, this.drawableObjects);
 
         createUI();
         initComponents(framename);
     }
 
     @Override
-    public void update(Car car, EventType eventType) {
+    public void update(DrawableObject dr, EventType eventType) {
 
         switch (eventType) {
             case REPAINT -> this.repaint();
-            case REMOVE -> this.removeDrawable(car);
+            case REMOVE -> this.removeDrawable(dr);
         }
     }
 
-    private void removeDrawable(Car car) {
-
+    private void removeDrawable(DrawableObject dr) {
+        this.drawableObjects.remove(dr);
+        this.repaint();
     }
 
     private void createUI() {

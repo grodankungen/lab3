@@ -34,7 +34,12 @@ public class CarApp {
         CarController controller = new CarController(model);
         CarView carView = new CarView("carsim the best", window_x, window_y, canvas_x, canvas_y, controller, drawableObjects);
 
-        model.addObserver(carView);
+
+        ObserverAdapter<Car, DrawableObject, EventType> adapter = new ObserverAdapter<>((Car c) -> carEntities.get(c));
+
+        adapter.addObserver(carView);
+        model.addObserver(adapter);
+
 
     }
 }
