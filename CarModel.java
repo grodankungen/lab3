@@ -12,16 +12,17 @@ import java.util.Random;
  * modifying the model state and the updating the view.
  */
 
-public class CarModel implements Observable<Car> {
+public class CarModel implements Observable<Car, EventType> {
 
     private final int drivable_space_x;
     private final int drivable_space_y;
     private final HashMap<Car, DrawableObject> carEntities;
     private final HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities;
 
-    private final ArrayList<Observer> observers = new ArrayList<>();
+    private final ArrayList<Observer<Car, EventType>> observers = new ArrayList<>();
 
     public CarModel(int drivable_x, int drivable_y, HashMap<Car, DrawableObject> carEntities, HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities) {
+
 
         drivable_space_x = drivable_x;
         drivable_space_y = drivable_y;
@@ -39,19 +40,19 @@ public class CarModel implements Observable<Car> {
 
 
     @Override
-    public void addObserver(Observer observer) {
+    public void addObserver(Observer<Car, EventType> observer) {
         observers.add(observer);
     }
 
     @Override
-    public void removeObserver(Observer observer) {
+    public void removeObserver(Observer<Car, EventType> observer) {
         observers.remove(observer);
     }
 
     @Override
-    public void notifyObservers(Car c) {
-        for (Observer obs : observers) {
-            obs.actOnSignal();
+    public void notifyObservers(Car car, EventType type) {
+        for (Observer<Car, EventType> obs : observers) {
+            obs.update(car, type);
         }
     }
 
@@ -87,7 +88,7 @@ public class CarModel implements Observable<Car> {
                 int y = (int) Math.round(car.getY());
                 updatePoint(carEntities.get(car), x, y);
 
-                notifyObservers(car);
+                notifyObservers(car, EventType.REPAINT);
             }
         }
     }

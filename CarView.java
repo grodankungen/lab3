@@ -1,6 +1,7 @@
 import UI_Elements.Button;
 import UI_Elements.ControlPanel;
 import UI_Elements.Spinner;
+import src.Car;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * each of it's components.
  */
 
-public class CarView extends JFrame implements Observer {
+public class CarView extends JFrame implements Observer<Car, EventType> {
     private final int X;
     private final int Y;
 
@@ -49,7 +50,7 @@ public class CarView extends JFrame implements Observer {
     }
 
     @Override
-    public void actOnSignal() {
+    public void update(Car car, EventType eventType) {
         this.repaint();
     }
 
@@ -89,28 +90,10 @@ public class CarView extends JFrame implements Observer {
         setupSpinner("Bed raise angle", bedSpinner);
 
         // Buttons
-        ControlPanel controlPanel = new ControlPanel(
-                0, 4,
-                new Dimension((X / 2) + 10, 200),
-                Color.CYAN,
-                gasButton,
-                turboOnButton,
-                liftBedButton,
-                lowerBedButton,
-                brakeButton,
-                turboOffButton,
-                addCarButton,
-                removeCarButton
-        );
+        ControlPanel controlPanel = new ControlPanel(0, 4, new Dimension((X / 2) + 10, 200), Color.CYAN, gasButton, turboOnButton, liftBedButton, lowerBedButton, brakeButton, turboOffButton, addCarButton, removeCarButton);
         this.add(controlPanel);
 
-        ControlPanel startStopPanel = new ControlPanel(
-                2, 1,
-                new Dimension((X / 5) - 15, 200),
-                Color.BLACK,
-                startButton,
-                stopButton
-        );
+        ControlPanel startStopPanel = new ControlPanel(2, 1, new Dimension((X / 5) - 15, 200), Color.BLACK, startButton, stopButton);
         this.add(startStopPanel);
 
         // Make the frame pack all it's components by respecting the sizes if possible.

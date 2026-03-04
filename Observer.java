@@ -1,4 +1,4 @@
-public interface Observer {
+public interface Observer<T, V> {
 
-    public void actOnSignal();
+    public void update(T event, V type);
 }
