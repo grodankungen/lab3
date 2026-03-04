@@ -14,8 +14,8 @@ import java.util.ArrayList;
  */
 
 public class CarView extends JFrame implements Observer {
-    private static final int X = 800;
-    private static final int Y = 800;
+    private final int X;
+    private final int Y;
 
     // The controller member
     ICarController controller;
@@ -38,9 +38,11 @@ public class CarView extends JFrame implements Observer {
     Spinner bedSpinner;
 
     // Constructor
-    public CarView(String framename, ICarController controller, ArrayList<DrawableObject> drawableObjects) {
+    public CarView(String framename, int window_x, int window_y, int canvas_x, int canvas_y, ICarController controller, ArrayList<DrawableObject> drawableObjects) {
+        X = window_x;
+        Y = window_y;
         this.controller = controller;
-        this.drawPanel = new DrawPanel(X, Y - 240, drawableObjects);
+        this.drawPanel = new DrawPanel(canvas_x, canvas_y, drawableObjects);
 
         createUI();
         initComponents(framename);
@@ -69,8 +71,8 @@ public class CarView extends JFrame implements Observer {
         this.stopButton = new Button("Stop all cars", () -> controller.stopCar());
         this.stopButton.setBackground(Color.RED);
 
-        this.addCarButton= new Button("Add car", () -> controller.addCar());
-        this.removeCarButton= new Button("Remove car", () -> controller.removeCar());
+        this.addCarButton = new Button("Add car", () -> controller.addCar());
+        this.removeCarButton = new Button("Remove car", () -> controller.removeCar());
     }
 
     // Sets everything in place and fits everything

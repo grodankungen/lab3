@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 /*
  * This class represents the Controller part in the MVC pattern.
  * It's responsibilities is to listen to the View and responds in a appropriate manner by
@@ -149,5 +150,17 @@ public class CarModel implements Observable<Car> {
                 ((Scania) car).lower(amount);
             }
         }
+    }
+
+    void addCar() {
+        if (carEntities.size() > 10) return;
+
+        Random r = new Random();
+        r.nextInt(0, CarType.values().length);
+
+    }
+
+    void removeCar() {
+
     }
 }

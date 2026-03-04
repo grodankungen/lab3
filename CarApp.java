@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CarApp {
+
+    final static int window_x = 800;
+    final static int window_y = 800;
+    final static int canvas_x = window_x;
+    final static int canvas_y = window_y - 240;
+
     static void main() {
         HashMap<Car, DrawableObject> carEntities = new HashMap<>();
         HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities = new HashMap<>();
@@ -21,7 +27,7 @@ public class CarApp {
 
         CarModel model = new CarModel(carEntities, workshopEntities);
         CarController controller = new CarController(model);
-        CarView carView = new CarView("carsim the best", controller, drawableObjects);
+        CarView carView = new CarView("carsim the best", window_x, window_y, canvas_x, canvas_y, controller, drawableObjects);
 
         model.addObserver(carView);
 
