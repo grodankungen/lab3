@@ -6,8 +6,12 @@ import java.util.HashMap;
 
 public class CarApp {
 
+    //Variables that dictate size the visible JFrame (CarView)
     final static int window_x = 800;
     final static int window_y = 800;
+
+    //variables that dictate size of the "canvas", e.g. the JFrame
+    //  where images are being moved around
     final static int canvas_x = window_x;
     final static int canvas_y = window_y - 240;
 
@@ -25,7 +29,8 @@ public class CarApp {
         drawableObjects.addAll(workshopEntities.values());
 
 
-        CarModel model = new CarModel(carEntities, workshopEntities);
+        //pass canvas_size so that we can register (bounce-collision and randomized vehicle spawn)
+        CarModel model = new CarModel(canvas_x, canvas_y, carEntities, workshopEntities);
         CarController controller = new CarController(model);
         CarView carView = new CarView("carsim the best", window_x, window_y, canvas_x, canvas_y, controller, drawableObjects);
 

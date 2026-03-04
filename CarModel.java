@@ -14,13 +14,17 @@ import java.util.Random;
 
 public class CarModel implements Observable<Car> {
 
+    private final int drivable_space_x;
+    private final int drivable_space_y;
     private final HashMap<Car, DrawableObject> carEntities;
     private final HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities;
 
     private final ArrayList<Observer> observers = new ArrayList<>();
 
-    public CarModel(HashMap<Car, DrawableObject> carEntities, HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities) {
+    public CarModel(int drivable_x, int drivable_y, HashMap<Car, DrawableObject> carEntities, HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities) {
 
+        drivable_space_x = drivable_x;
+        drivable_space_y = drivable_y;
         this.carEntities = carEntities;
         this.workshopEntities = workshopEntities;
 
@@ -62,7 +66,7 @@ public class CarModel implements Observable<Car> {
          */
         public void actionPerformed(ActionEvent e) {
             for (Car car : carEntities.keySet()) {
-                if (car.getX() > 800 || car.getX() < 0 || car.getY() > 560 || car.getY() < 0) {
+                if (car.getX() > drivable_space_x || car.getX() < 0 || car.getY() > drivable_space_y || car.getY() < 0) {
                     car.turnRight(180);
                 }
 
