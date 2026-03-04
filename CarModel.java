@@ -166,6 +166,12 @@ public class CarModel implements Observable<Car, EventType> {
     }
 
     void removeCar() {
+        if  (carEntities.isEmpty()) return;
 
+        Random r = new Random();
+        int i = r.nextInt(0, carEntities.size());
+
+        Car c = (new ArrayList<>(carEntities.keySet())).get(i);
+        carEntities.remove(c);
     }
 }
