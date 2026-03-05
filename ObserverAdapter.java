@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 public class ObserverAdapter<T1, T2, V> implements Observer<T1, V>, Observable<T2, V> {
-
-
     private final Function<T1, T2> mapper;
 
     private final ArrayList<Observer<T2, V>> dest_observers = new ArrayList<>();

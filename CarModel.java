@@ -1,6 +1,7 @@
 import src.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class CarModel implements Observable<Car, CarEventType> {
                 for (CarWorkshop<Volvo240> workshop : workshopEntities.keySet()) {
                     if (car.getX() > workshop.getX() - 10 && car.getX() < workshop.getX() + 10 && car.getY() > workshop.getY() - 10 && car.getY() < workshop.getY() + 10) {
 
-                        if (car instanceof Volvo240) {  // TODO hur ska vi fixa detta för alla typer av workshops?
+                        if (car instanceof Volvo240) {
                             CarWorkshop<Volvo240> volvoWorkshop = workshop;
                             volvoWorkshop.loadCar((Volvo240) car);
                         }
@@ -161,8 +162,14 @@ public class CarModel implements Observable<Car, CarEventType> {
         if (carEntities.size() > 10) return;
 
         Random r = new Random();
-        r.nextInt(0, CarType.values().length);
+        int car_number = r.nextInt(carEntities.size());
+        int x = r.nextInt(0, this.drivable_space_x);
+        int y = r.nextInt(0, this.drivable_space_y);
 
+        Car c = CarFactory.createCarWithStartingPosition(CarType.values()[car_number], new Point(x, y));
+
+        notifyObservers(c, CarEventType.ADD);
+        carEntities.put(c, new DrawableObject(new Point(x, y), "pics/Scania.jpg"));
     }
 
     void removeCar() {

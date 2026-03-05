@@ -37,6 +37,7 @@ public class CarApp {
 
         ObserverAdapter<Car, DrawableObject, CarEventType> adapter = new ObserverAdapter<>((Car c) -> carEntities.get(c));
         model.addObserver(adapter);
+
         adapter.addObserver(carView);
 
 

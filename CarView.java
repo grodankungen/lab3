@@ -56,6 +56,7 @@ public class CarView extends JFrame implements Observer<DrawableObject, CarEvent
         switch (event) {
             case REPAINT -> this.repaint();
             case REMOVE -> this.removeDrawable(data);
+            case ADD -> this.drawableObjects.add(data);
         }
     }
 
