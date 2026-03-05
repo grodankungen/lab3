@@ -173,6 +173,13 @@ public class CarModel implements Observable<Car, EventType> {
 
         Car c = (new ArrayList<>(carEntities.keySet())).get(i);
 
+        for (CarWorkshop<Volvo240> workshop : workshopEntities.keySet()) {
+            if (c instanceof Volvo240) {
+
+                workshop.offloadCar((Volvo240) c);
+            }
+        }
+
         notifyObservers(c, EventType.REMOVE);
         carEntities.remove(c);
     }
