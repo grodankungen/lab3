@@ -12,14 +12,14 @@ import java.util.Random;
  * modifying the model state and the updating the view.
  */
 
-public class CarModel implements Observable<Car, EventType> {
+public class CarModel implements Observable<Car, CarEventType> {
 
     private final int drivable_space_x;
     private final int drivable_space_y;
     private final HashMap<Car, DrawableObject> carEntities;
     private final HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities;
 
-    private final ArrayList<Observer<Car, EventType>> observers = new ArrayList<>();
+    private final ArrayList<Observer<Car, CarEventType>> observers = new ArrayList<>();
 
     public CarModel(int drivable_x, int drivable_y, HashMap<Car, DrawableObject> carEntities, HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities) {
 
@@ -40,18 +40,18 @@ public class CarModel implements Observable<Car, EventType> {
 
 
     @Override
-    public void addObserver(Observer<Car, EventType> observer) {
+    public void addObserver(Observer<Car, CarEventType> observer) {
         observers.add(observer);
     }
 
     @Override
-    public void removeObserver(Observer<Car, EventType> observer) {
+    public void removeObserver(Observer<Car, CarEventType> observer) {
         observers.remove(observer);
     }
 
     @Override
-    public void notifyObservers(Car car, EventType type) {
-        for (Observer<Car, EventType> obs : observers) {
+    public void notifyObservers(Car car, CarEventType type) {
+        for (Observer<Car, CarEventType> obs : observers) {
             obs.update(car, type);
         }
     }
@@ -88,7 +88,7 @@ public class CarModel implements Observable<Car, EventType> {
                 int y = (int) Math.round(car.getY());
                 updatePoint(carEntities.get(car), x, y);
 
-                notifyObservers(car, EventType.REPAINT);
+                notifyObservers(car, CarEventType.REPAINT);
             }
         }
     }
@@ -180,7 +180,7 @@ public class CarModel implements Observable<Car, EventType> {
             }
         }
 
-        notifyObservers(c, EventType.REMOVE);
+        notifyObservers(c, CarEventType.REMOVE);
         carEntities.remove(c);
     }
 }

@@ -30,10 +30,10 @@ public class ObserverAdapter<T1, T2, V> implements Observer<T1, V>, Observable<T
     }
 
     @Override
-    public void update(T1 event, V type) {
+    public void update(T1 data, V event) {
 
-        T2 mapped = this.mapper.apply(event);
+        T2 mapped = this.mapper.apply(data);
 
-        notifyObservers(mapped, type);
+        notifyObservers(mapped, event);
     }
 }

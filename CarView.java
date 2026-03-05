@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * each of it's components.
  */
 
-public class CarView extends JFrame implements Observer<DrawableObject, EventType> {
+public class CarView extends JFrame implements Observer<DrawableObject, CarEventType> {
     private final int X;
     private final int Y;
     private final ArrayList<DrawableObject> drawableObjects;
@@ -51,11 +51,11 @@ public class CarView extends JFrame implements Observer<DrawableObject, EventTyp
     }
 
     @Override
-    public void update(DrawableObject dr, EventType eventType) {
+    public void update(DrawableObject data, CarEventType event) {
 
-        switch (eventType) {
+        switch (event) {
             case REPAINT -> this.repaint();
-            case REMOVE -> this.removeDrawable(dr);
+            case REMOVE -> this.removeDrawable(data);
         }
     }
 
