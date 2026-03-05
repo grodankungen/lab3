@@ -159,7 +159,7 @@ public class CarModel implements Observable<Car, CarEventType> {
     }
 
     void addCar() {
-        if (carEntities.size() > 10) return;
+        if (carEntities.size() >= 10) return;
 
         Random r = new Random();
 
