@@ -47,7 +47,7 @@ public class CarController implements ICarController {
 
     @Override
     public void addCar() {
-        // TODO
+        model.addCar();
     }
 
     @Override
