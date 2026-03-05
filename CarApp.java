@@ -19,9 +19,9 @@ public class CarApp {
         HashMap<Car, DrawableObject> carEntities = new HashMap<>();
         HashMap<CarWorkshop<Volvo240>, DrawableObject> workshopEntities = new HashMap<>();
 
-        carEntities.put(CarFactory.createCarWithStartingPosition(CarType.VOLVO240, new Point(0, 300)), new DrawableObject(new Point(0, 300), "pics/Volvo240.jpg"));
-        carEntities.put(CarFactory.createCarWithStartingPosition(CarType.SAAB95, new Point(0, 100)), new DrawableObject(new Point(0, 100), "pics/Saab95.jpg"));
-        carEntities.put(CarFactory.createCarWithStartingPosition(CarType.SCANIA, new Point(0, 200)), new DrawableObject(new Point(0, 200), "pics/Scania.jpg"));
+        carEntities.put(CarFactory.createCarWithStartingPosition(CarType.VOLVO240, new Point(0, 300)), new DrawableObject(new Point(0, 300), CarType.VOLVO240.getImgPath()));
+        carEntities.put(CarFactory.createCarWithStartingPosition(CarType.SAAB95, new Point(0, 100)), new DrawableObject(new Point(0, 100), CarType.SAAB95.getImgPath()));
+        carEntities.put(CarFactory.createCarWithStartingPosition(CarType.SCANIA, new Point(0, 200)), new DrawableObject(new Point(0, 200), CarType.SCANIA.getImgPath()));
         workshopEntities.put(new CarWorkshop<Volvo240>(5, new Point(300, 300)), new DrawableObject(new Point(300, 300), "pics/VolvoBrand.jpg"));
 
         ArrayList<DrawableObject> drawableObjects = new ArrayList<>();

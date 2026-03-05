@@ -162,14 +162,19 @@ public class CarModel implements Observable<Car, CarEventType> {
         if (carEntities.size() > 10) return;
 
         Random r = new Random();
-        int car_number = r.nextInt(carEntities.size());
+
+
         int x = r.nextInt(0, this.drivable_space_x);
         int y = r.nextInt(0, this.drivable_space_y);
 
-        Car c = CarFactory.createCarWithStartingPosition(CarType.values()[car_number], new Point(x, y));
+        int car_number = r.nextInt(CarType.values().length);
+        CarType carType = CarType.values()[car_number];
+
+        Car c = CarFactory.createCarWithStartingPosition(carType, new Point(x, y));
+
+        carEntities.put(c, new DrawableObject(new Point(x, y), carType.getImgPath()));
 
         notifyObservers(c, CarEventType.ADD);
-        carEntities.put(c, new DrawableObject(new Point(x, y), "pics/Scania.jpg"));
     }
 
     void removeCar() {
